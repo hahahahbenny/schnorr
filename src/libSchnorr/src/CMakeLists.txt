@@ -21,9 +21,9 @@ else()
   add_library (Schnorr STATIC ${source_files})
 endif()
 
-if("${OPENSSL_VERSION_MAJOR}.${OPENSSL_VERSION_MINOR}" VERSION_LESS "1.1")
-	target_sources (Schnorr PRIVATE generate_dsa_nonce.c)
-endif()
+# if("${OPENSSL_VERSION_MAJOR}.${OPENSSL_VERSION_MINOR}" VERSION_LESS "1.1")
+# 	target_sources (Schnorr PRIVATE generate_dsa_nonce.c)
+# endif()
 
 target_include_directories (Schnorr PUBLIC ${PROJECT_SOURCE_DIR}/src)
-target_link_libraries (Schnorr OpenSSL::Crypto)
+target_link_libraries (Schnorr PkgConfig::OpenSSL)

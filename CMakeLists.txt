@@ -24,8 +24,21 @@ find_package(Boost COMPONENTS system unit_test_framework REQUIRED)
 include_directories(${Boost_INCLUDE_DIR})
 
 #TODO: upgrade to OpenSSL 1.1.1a
-find_package(OpenSSL REQUIRED)
-include_directories(${OPENSSL_INCLUDE_DIR})
+# find_package(OpenSSL REQUIRED)
+# include_directories(${OPENSSL_INCLUDE_DIR})
+
+set(ENV{PKG_CONFIG_PATH} "$ENV{PKG_CONFIG_PATH}:${PROJECT_SOURCE_DIR}/openssl/lib/pkgconfig")
+pkg_check_modules(OpenSSL REQUIRED IMPORTED_TARGET libcrypto libssl openssl)
+if(OpenSSL_FOUND)
+    message(STATUS "found openssl")
+    message(STATUS "    - OpenSSL include directories: ${OpenSSL_INCLUDE_DIRS}")
+    message(STATUS "    - OpenSSL libraries directories: ${OpenSSL_LIBRARY_DIRS}")
+    message(STATUS "    - OpenSSL libraries: ${OpenSSL_LIBRARIES}")
+    include_directories(${OpenSSL_INCLUDE_DIRS})
+    link_directories(${OpenSSL_LIBRARY_DIRS})
+else()
+    message(FATAL_ERROR "avfilter not found")
+endif()
 
 # export compile commands
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
